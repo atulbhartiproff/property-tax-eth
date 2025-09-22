@@ -1,66 +1,122 @@
-## Foundry
+# Property Tax Management on Ethereum
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Project Description
 
-Foundry consists of:
+This project is a decentralized application (dApp) backend for managing property tax records on the Ethereum blockchain. It uses a Solidity smart contract to automate property tax collection while ensuring all records and payments are transparent, immutable, and secure.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+This repository contains the smart contract and development environment managed with Foundry.
 
-## Documentation
+## Features
 
-https://book.getfoundry.sh/
+* **Admin-Controlled:** A designated admin address is responsible for managing the system.
+* **Add Properties:** The admin can add new properties with details like owner name, location, area, and tax amount.
+* **Pay Tax:** Any user can pay the property tax for a property by sending the exact amount of ETH to the contract.
+* **Track Payments:** The contract keeps a record of which properties have been paid for.
+* **Secure Fund Withdrawal:** The admin can securely withdraw all collected funds from the contract.
+* **Custom Errors:** Uses custom errors for clear and gas-efficient reverts.
 
-## Usage
+## Tech Stack
 
-### Build
+* **Blockchain:** Ethereum
+* **Smart Contract Language:** Solidity (0.8.20)
+* **Development Framework:** Foundry (forge, anvil, cast)
 
-```shell
-$ forge build
+## Getting Started: Local Setup
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+You need the following software installed on your machine:
+
+* **Foundry:** The core development toolkit. Install it by running:
+
+  ```bash
+  curl -L https://foundry.paradigm.xyz | bash && foundryup
+  ```
+* **Git:** To clone the repository.
+
+### Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone <YOUR_REPOSITORY_URL>
+   cd property-tax-eth/backend
+   ```
+2. **Install Foundry Dependencies**
+
+   ```bash
+   forge install
+   ```
+3. **Compile the Smart Contract**
+
+   ```bash
+   forge build
+   ```
+4. **Run the Tests**
+
+   ```bash
+   forge test -vvv
+   ```
+
+   Ensure all tests pass.
+
+## Usage: Local Interaction Guide
+
+You will need three terminal windows to interact with the smart contract.
+
+### Step 1: Start the Local Blockchain (Terminal 1)
+
+```bash
+anvil
 ```
 
-### Test
+Keep this terminal running. It provides funded test accounts.
 
-```shell
-$ forge test
+### Step 2: Deploy the Smart Contract (Terminal 2)
+
+```bash
+forge create --rpc-url http://127.0.0.1:8545 \
+--private-key YOUR_ADMIN_PRIVATE_KEY \
+src/PropertyTax.sol:PropertyTax \
+--broadcast
 ```
 
-### Format
+Copy the `Deployed to:` address from the output.
 
-```shell
-$ forge fmt
+### Step 3: Interact with the Contract (Terminal 2 or 3)
+
+* **Check the Admin Address**
+
+```bash
+cast call YOUR_CONTRACT_ADDRESS "I_ADMIN()" --rpc-url http://127.0.0.1:8545
 ```
 
-### Gas Snapshots
+* **Add a Property (Admin)**
 
-```shell
-$ forge snapshot
+```bash
+cast send YOUR_CONTRACT_ADDRESS "addProperty(string,string,uint256,uint256)" \
+"Alice" "123 Main St" 1500 1000000000000000000 \
+--private-key YOUR_ADMIN_PRIVATE_KEY \
+--rpc-url http://127.0.0.1:8545
 ```
 
-### Anvil
+* **Pay Property Tax (User)**
 
-```shell
-$ anvil
+```bash
+cast send YOUR_CONTRACT_ADDRESS "payTax(uint256)" 1 \
+--value 1ether \
+--private-key YOUR_USER_PRIVATE_KEY \
+--rpc-url http://127.0.0.1:8545
 ```
 
-### Deploy
+* **Verify the Payment**
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+cast call YOUR_CONTRACT_ADDRESS "getPropertyDetails(uint256)" 1 --rpc-url http://127.0.0.1:8545
 ```
 
-### Cast
+## Next Steps
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+* Develop a frontend application (e.g., using React) for a user-friendly interface to interact with the smart contract.
