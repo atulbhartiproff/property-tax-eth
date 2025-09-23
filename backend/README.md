@@ -41,7 +41,7 @@ You need the following software installed on your machine:
 1. **Clone the Repository**
 
    ```bash
-   git clone <YOUR_REPOSITORY_URL>
+   git clone https://github.com/atulbhartiproff/property-tax-eth
    cd property-tax-eth/backend
    ```
 2. **Install Foundry Dependencies**
