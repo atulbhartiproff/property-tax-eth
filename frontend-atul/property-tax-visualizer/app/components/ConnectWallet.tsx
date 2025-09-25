@@ -11,11 +11,13 @@ export function ConnectWallet() {
 
   if (isConnected) {
     return (
-      <div className="text-right">
-        <p className="text-sm text-gray-400">Connected: {`${address?.slice(0, 6)}...${address?.slice(-4)}`}</p>
+      <div className="flex items-center gap-4">
+        <div className="px-4 py-2 text-sm font-mono border border-purple-800 bg-purple-900/20 rounded-lg text-purple-300">
+          {`${address?.slice(0, 6)}...${address?.slice(-4)}`}
+        </div>
         <button
           onClick={() => disconnect()}
-          className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-red-900/50 hover:text-red-400 transition-colors"
         >
           Disconnect
         </button>
@@ -25,8 +27,8 @@ export function ConnectWallet() {
 
   return (
     <button
-      onClick={() => connect({ connector: injected() })} // injected() connects to MetaMask
-      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      onClick={() => connect({ connector: injected() })}
+      className="px-6 py-2 bg-purple-600 font-semibold text-white rounded-lg hover:bg-purple-700 transition-colors shadow-[0_0_20px_rgba(147,51,234,0.5)]"
     >
       Connect MetaMask
     </button>
