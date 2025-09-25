@@ -1,0 +1,42 @@
+# =============================================================
+#         Cast Commands for the PropertyTax Smart Contract
+# =============================================================
+#
+# Instructions:
+# 1. Replace placeholder values like [PROPERTY_ID] with actual data.
+# 2. Ensure your private keys and contract address are correct.
+# 3. Run these commands from your terminal in the project directory.
+#
+# -------------------------------------------------------------
+
+# --- Deploy Contract ---
+forge create --rpc-url http://127.0.0.1:8545 --private-key [PROPERTY_ID] src/PropertyTax.sol:PropertyTax
+
+
+# --- 1. Add a new property (Admin only) ---
+# Adds a new property to the contract.
+cast send <Destination> "addProperty(string,string,uint256,uint256)" "Charlie" "789 Pine Ln" 2500 650000000000000000 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545
+
+
+# --- 2. Get details for a specific property ---
+# Retrieves all details for a property. Useful for finding the tax amount.
+# Replace [PROPERTY_ID] with the ID you want to check (e.g., 1).
+cast call <Destination> "getPropertyDetails(uint256)" [PROPERTY_ID] --rpc-url http://127.0.0.1:8545
+
+
+# --- 3. Pay the tax for a property ---
+# Pays the tax for a specific property.
+# Replace [PROPERTY_ID] with the property's ID.
+# Replace [EXACT_TAX_AMOUNT_IN_WEI] with the value from getPropertyDetails.
+cast send <Destination> "payTax(uint256)" [PROPERTY_ID] --value [EXACT_TAX_AMOUNT_IN_WEI] --private-key 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d --rpc-url http://127.0.0.1:8545
+
+
+# --- 4. Get a list of paid properties for a user ---
+# Lists all property IDs a specific user has paid for.
+# Replace [USER_ADDRESS] with the wallet address to check.
+cast call <Destination> "getPaidPropertiesByUser(address)" [USER_ADDRESS] --rpc-url http://127.0.0.1:8545
+
+
+# --- 5. Withdraw all funds from the contract (Admin only) ---
+# Allows the admin to withdraw the entire Ether balance from the contract.
+cast send <Destination> "withdrawFunds()" --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545
