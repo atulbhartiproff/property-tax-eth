@@ -58,7 +58,7 @@ export function BlockDetails({ block }: { block: BlockWithParentHash | null }) {
       </div>
 
       <div className="mt-6">
-        <h3 className="text-lg font-bold text-purple-300">Merkle Patricia Trie Verification</h3>
+        <h3 className="text-lg font-bold text-purple-300">Merkle Trie Verification</h3>
         <div className="p-4 mt-2 bg-gray-900 rounded-lg font-mono text-xs space-y-2">
           <div>
             <p className="text-gray-400">Calculated Root:</p>
